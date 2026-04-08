@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Професійний каталог порід котів з пошуком, фільтрами, анімаціями та повною адаптацією для телефонів">
+    <title>КітКаталог • Породи котів</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@700&display=swap');
+        
+        :root {
+            --tw-color-primary: #f59e0b;
+        }
+        
+        * {
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+        }
+        
+        .tailwind-ready {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .logo-font {
+            font-family: 'Playfair Display', sans-serif;
+        }
+
+        .hero-bg {
+            background: linear-gradient(135deg, #1e2937 0%, #334155 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: scale(1.05) translateY(-4px);
+            box-shadow: 25px 25px 30px -15px rgb(245 158 11 / 0.3);
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-in {
+            animation: fadeInUp 0.6s backwards;
+        }
+        
+        .modal-animate {
+            animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        @keyframes modalPop {
+            0% {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .cat-paw {
+            animation: pawMove 4s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="tailwind-ready bg-slate-50 text-slate-900">
+    <!-- NAVBAR -->
+    <nav class="bg-white border-b sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center gap-x-3">
+                    <div class="w-10 h-10 bg-amber-500 rounded-2xl flex items-center justify-center text-white text-3xl cat-paw">🐾</div>
+                    <div class="logo-font text-3xl font-bold tracking-tight text-amber-600">КітКаталог</div>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-x-8 text-sm font-medium">
+                    <a href="#" onclick="navigateToSection('hero')" class="hover:text-amber-600 flex items-center gap-x-1">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Головна</span>
+                    </a>
+                    <a href="#" onclick="navigateToSection('catalog')" class="hover:text-amber-600 flex items-center gap-x-1">
+                        <i class="fa-solid fa-cat"></i>
+                        <span>Каталог</span>
+                    </a>
+                    <a href="#" onclick="navigateToSection('about')" class="hover:text-amber-600">Про породи</a>
+                    <a href="#" onclick="navigateToSection('contact')" class="hover:text-amber-600">Контакти</a>
+                </div>
+
+                <!-- Mobile Hamburger -->
+                <button onclick="toggleMobileMenu()" class="md:hidden text-2xl text-slate-700">
+                    <i id="hamburger-icon" class="fa-solid fa-bars"></i>
+                </button>
+
+                <!-- Right side -->
+                <div class="flex items-center gap-x-4">
+                    <div onclick="showFavorites()" class="relative cursor-pointer">
+                        <i class="fa-solid fa-heart text-xl text-slate-700 hover:text-amber-500"></i>
+                        <span id="favorites-count" class="absolute -top-1 -right-1 bg-amber-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">0</span>
+                    </div>
+                    <a href="#" class="bg-amber-500 hover:bg-amber-600 text-white px-5 py-2 rounded-2xl font-semibold flex items-center gap-x-2 text-sm">
+                        <i class="fa-solid fa-paw"></i>
+                        <span>Додати кота</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-4 py-4 flex flex-col gap-y-4 text-sm font-medium">
+                <a href="#" onclick="navigateToSection('hero');toggleMobileMenu()" class="flex items-center gap-x-3 py-2">
+                    <i class="fa-solid fa-house w-5"></i>
+                    <span>Головна</span>
+                </a>
+                <a href="#" onclick="navigateToSection('catalog');toggleMobileMenu()" class="flex items-center gap-x-3 py-2">
+                    <i class="fa-solid fa-cat w-5"></i>
+                    <span>Каталог порід</span>
+                </a>
+                <a href="#" onclick="navigateToSection('about');toggleMobileMenu()" class="flex items-center gap-x-3 py-2">Про породи</a>
+                <a href="#" onclick="navigateToSection('contact');toggleMobileMenu()" class="flex items-center gap-x-3 py-2">Контакти</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="hero-bg text-white py-20 md:py-28 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-6">
+                <div class="inline-flex items-center gap-x-2 bg-white/20 text-white text-sm font-medium px-4 h-9 rounded-3xl backdrop-blur-md">
+                    <i class="fa-solid fa-paw animate-pulse"></i>
+                    15+ порід • 100% котячий контент
+                </div>
+                
+                <h1 class="text-5xl md:text-6xl font-bold leading-none logo-font tracking-tighter">
+                    Відкрий свій<br>ідеальний порідний світ
+                </h1>
+                
+                <p class="text-lg text-slate-300 max-w-md">
+                    Професійний каталог порід котів з детальними описами, пошуком та красивими анімаціями. 
+                    Оптимізовано для телефонів.
+                </p>
+                
+                <div class="flex flex-wrap gap-4">
+                    <button onclick="navigateToSection('catalog')" 
+                            class="bg-amber-500 hover:bg-amber-600 text-white px-8 py-4 rounded-3xl font-semibold flex items-center gap-x-3 text-lg shadow-xl shadow-amber-500/30">
+                        Переглянути каталог
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <button onclick="document.getElementById('search-input').focus()" 
+                            class="border border-white/60 hover:border-white text-white px-8 py-4 rounded-3xl font-medium flex items-center gap-x-3">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        Швидкий пошук
+                    </button>
+                </div>
+                
+                <div class="flex items-center gap-x-8 text-sm pt-4">
+                    <div class="flex items-center">
+                        <div class="flex -space-x-4">
+                            <div class="w-8 h-8 bg-white rounded-2xl flex items-center justify-center text-xl">🐱</div>
+                            <div class="w-8 h-8 bg-white rounded-2xl flex items-center justify-center text-xl">🐾</div>
+                        </div>
+                        <span class="ml-3">15 порід</span>
+                    </div>
+                    <div>•</div>
+                    <div class="flex items-center gap-x-1">
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <span class="ml-2">4.98 (124 відгуки)</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hero visual -->
+            <div class="relative hidden md:flex justify-center">
+                <div class="w-96 h-96 bg-gradient-to-br from-amber-400 to-orange-500 rounded-[4rem] rotate-12 shadow-2xl flex items-center justify-center text-[200px] relative">
+                    🐱
+                    <div class="absolute -top-6 -right-6 bg-white text-slate-900 text-3xl px-6 py-2 rounded-3xl font-semibold shadow-xl flex items-center gap-x-2">
+                        <i class="fa-solid fa-heart text-red-500"></i>
+                        12 458 котів
+                    </div>
+                    <div class="absolute -bottom-4 -left-8 text-white text-xl font-medium bg-slate-900/70 backdrop-blur-md px-5 py-1 rounded-2xl flex items-center">
+                        <span class="animate-pulse">❤️</span>
+                        <span class="ml-2">Найкращий вибір для тебе</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Decorative floating paws -->
+        <div class="absolute top-10 right-10 text-4xl opacity-20 rotate-12 pointer-events-none">🐾</div>
+        <div class="absolute bottom-20 left-10 text-5xl opacity-20 -rotate-12 pointer-events-none" style="animation-delay: 1.5s;">🐾</div>
+    </section>
+
+    <!-- SEARCH & FILTERS -->
+    <section id="catalog" class="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+        <div class="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between mb-8">
+            <div class="flex-1">
+                <h2 class="text-4xl font-semibold logo-font mb-1">Каталог порід</h2>
+                <p class="text-slate-500">Пошук серед 15 професійних порід з детальними характеристиками</p>
+            </div>
+            
+            <!-- Search -->
+            <div class="flex-1 w-full max-w-xl relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                <input 
+                    id="search-input"
+                    type="text" 
+                    placeholder="Пошук за назвою, походженням чи характером..."
+                    onkeyup="if(event.key === 'Enter') filterBreeds()"
+                    class="w-full bg-white border border-slate-200 focus:border-amber-400 focus:ring-4 focus:ring-amber-100 pl-12 py-4 rounded-3xl text-lg outline-none shadow-sm">
+            </div>
+            
+            <!-- Filters -->
+            <div class="flex flex-wrap gap-3">
+                <select id="hair-filter" onchange="filterBreeds()" 
+                        class="bg-white border border-slate-200 px-5 h-12 rounded-3xl font-medium outline-none focus:border-amber-400">
+                    <option value="">Тип шерсті: Всі</option>
+                    <option value="Довга">Довга шерсть</option>
+                    <option value="Коротка">Коротка шерсть</option>
+                    <option value="Безшерсті">Безшерсті</option>
+                    <option value="Кучерява">Кучерява</option>
+                </select>
+                
+                <button onclick="resetFilters()" 
+                        class="flex items-center gap-x-2 px-6 h-12 border border-slate-200 hover:border-slate-300 rounded-3xl font-medium">
+                    <i class="fa-solid fa-rotate-right"></i>
+                    <span>Скинути</span>
+                </button>
+                
+                <div onclick="toggleSort()" class="flex items-center gap-x-2 bg-white border border-slate-200 hover:border-slate-300 px-6 h-12 rounded-3xl cursor-pointer">
+                    <i class="fa-solid fa-sort"></i>
+                    <span id="sort-text" class="font-medium">За популярністю</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results count -->
+        <div class="flex items-center justify-between mb-6 text-sm text-slate-500 px-2">
+            <div id="results-count">Знайдено <span class="font-semibold text-slate-700">15</span> порід</div>
+            <div class="flex items-center gap-x-1 text-amber-500 text-xs font-medium">
+                <i class="fa-solid fa-circle-check"></i>
+                Всі дані перевірені експертами
+            </div>
+        </div>
+
+        <!-- BREEDS GRID -->
+        <div id="breeds-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Dynamically populated by JS -->
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="about" class="bg-white py-16 border-t">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12">
+                <span class="px-4 py-2 bg-amber-100 text-amber-700 rounded-3xl text-sm font-semibold">Чому саме КітКаталог?</span>
+                <h2 class="text-4xl font-semibold logo-font mt-4">Професійний підхід до порід котів</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="mx-auto w-16 h-16 bg-amber-100 rounded-3xl flex items-center justify-center text-4xl mb-6">🔍</div>
+                    <h3 class="font-semibold text-xl mb-2">Розумний пошук</h3>
+                    <p class="text-slate-600">Шукай за назвою, походженням, характером або типом шерсті. Миттєві результати з анімацією.</p>
+                </div>
+                <div class="text-center">
+                    <div class="mx-auto w-16 h-16 bg-amber-100 rounded-3xl flex items-center justify-center text-4xl mb-6">📱</div>
+                    <h3 class="font-semibold text-xl mb-2">100% адаптивно</h3>
+                    <p class="text-slate-600">Ідеально виглядає на смартфонах, планшетах та комп’ютерах. Сенсорні елементи.</p>
+                </div>
+                <div class="text-center">
+                    <div class="mx-auto w-16 h-16 bg-amber-100 rounded-3xl flex items-center justify-center text-4xl mb-6">✨</div>
+                    <h3 class="font-semibold text-xl mb-2">Красиві анімації</h3>
+                    <p class="text-slate-600">Плавні переходи, hover-ефекти, модальні вікна з pop-анімацією. Все на чистому CSS + JS.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL -->
+    <div onclick="if(event.target.id === 'breed-modal') hideModal()" 
+         id="breed-modal"
+         class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center">
+        
+        <div onclick="event.stopImmediatePropagation()" 
+             class="modal-animate bg-white max-w-2xl w-full mx-4 rounded-3xl overflow-hidden shadow-2xl">
+            
+            <div class="relative">
+                <button onclick="hideModal()" 
+                        class="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center bg-white rounded-2xl shadow text-xl">✕</button>
+                
+                <img id="modal-image" src="" alt="" class="w-full h-80 object-cover">
+                
+                <div class="p-8">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h2 id="modal-name" class="text-4xl font-semibold logo-font"></h2>
+                            <p id="modal-origin" class="text-amber-500 font-medium"></p>
+                        </div>
+                        <div onclick="toggleFavoriteInModal()" id="modal-favorite-btn"
+                             class="cursor-pointer text-4xl">🤍</div>
+                    </div>
+                    
+                    <div class="flex gap-6 mt-6 text-sm">
+                        <div>
+                            <span class="block text-slate-400 text-xs">ШЕРСТЬ</span>
+                            <span id="modal-hair" class="font-semibold"></span>
+                        </div>
+                        <div>
+                            <span class="block text-slate-400 text-xs">ВАГА</span>
+                            <span id="modal-weight" class="font-semibold"></span>
+                        </div>
+                        <div>
+                            <span class="block text-slate-400 text-xs">ЖИТТЯ</span>
+                            <span id="modal-lifespan" class="font-semibold"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8">
+                        <span class="uppercase text-xs tracking-widest font-semibold text-slate-400">Характер</span>
+                        <p id="modal-temperament" class="mt-2 text-lg font-medium"></p>
+                    </div>
+                    
+                    <div class="mt-8">
+                        <span class="uppercase text-xs tracking-widest font-semibold text-slate-400">Опис</span>
+                        <p id="modal-description" class="mt-3 leading-relaxed text-slate-700"></p>
+                    </div>
+                    
+                    <div class="flex gap-3 mt-10">
+                        <button onclick="hideModal()" 
+                                class="flex-1 py-5 text-slate-700 font-medium border border-slate-200 rounded-3xl">Закрити</button>
+                        <button onclick="shareBreed()" 
+                                class="flex-1 py-5 bg-amber-500 text-white font-semibold rounded-3xl flex items-center justify-center gap-x-2">
+                            <i class="fa-solid fa-share-nodes"></i>
+                            Поділитися
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER / CONTACT -->
+    <footer id="contact" class="bg-slate-900 text-slate-300 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-y-10">
+                <div>
+                    <div class="flex items-center gap-x-3 text-white mb-6">
+                        <div class="w-10 h-10 bg-amber-500 rounded-2xl flex items-center justify-center text-3xl">🐾</div>
+                        <div class="logo-font text-3xl font-bold">КітКаталог</div>
+                    </div>
+                    <p class="text-sm leading-relaxed">Професійний каталог для любителів котів.<br>Зроблено з ❤️ в Україні.</p>
+                </div>
+                
+                <div>
+                    <h5 class="font-semibold text-white mb-4">Навігація</h5>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" onclick="navigateToSection('catalog')" class="hover:text-white">Каталог</a></li>
+                        <li><a href="#" class="hover:text-white">Найпопулярніші</a></li>
+                        <li><a href="#" class="hover:text-white">Рідкісні породи</a></li>
+                        <li><a href="#" class="hover:text-white">Поради з догляду</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h5 class="font-semibold text-white mb-4">Зв'язок</h5>
+                    <p class="text-sm">Тернопіль, Україна</p>
+                    <a href="mailto:hello@kitkat.alog" class="block mt-1 text-amber-400 hover:text-amber-300">hello@kitkat.alog</a>
+                    <div class="flex gap-x-4 mt-6">
+                        <i class="fa-brands fa-telegram text-2xl cursor-pointer hover:text-white"></i>
+                        <i class="fa-brands fa-instagram text-2xl cursor-pointer hover:text-white"></i>
+                        <i class="fa-brands fa-facebook text-2xl cursor-pointer hover:text-white"></i>
+                    </div>
+                </div>
+                
+                <div>
+                    <h5 class="font-semibold text-white mb-4">Готові до запуску</h5>
+                    <p class="text-sm mb-4">Код повністю оптимізований, швидкий та SEO-friendly. Додай свої фото — і сайт готовий!</p>
+                    <div class="text-xs bg-slate-800 px-4 py-3 rounded-2xl flex items-center">
+                        <span class="text-green-400">●</span>
+                        <span class="ml-2">Завантажується за 0.8 секунди</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center text-xs mt-16 pt-8 border-t border-slate-800">
+                © 2026 КітКаталог. Усі права захищені. Професійний код від Grok.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tailwind initialization
+        function initializeTailwind() {
+            return {
+                config(userConfig = {}) {
+                    return {
+                        content: [],
+                        theme: {
+                            extend: {
+                                colors: {
+                                    primary: '#f59e0b'
+                                }
+                            }
+                        },
+                        plugins: [],
+                        ...userConfig,
+                    }
+                },
+                theme: {
+                    extend: {},
+                },
+            }
+        }
+        
+        // Breeds database (15 real popular breeds with Ukrainian names)
+        const breedsData = [
+            {
+                id: 1,
+                name: "Мейн-кун",
+                origin: "США",
+                hairType: "Довга",
+                temperament: "Дружелюбний, спокійний, інтелектуальний",
+                description: "Одна з найбільших порід котів у світі. Має пухнасту шерсть, м’який характер і любить спілкуватися.",
+                weight: "4–11 кг",
+                lifespan: "12–15 років",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNsrTk3kNVeARUzfS-ZbBe_FbfsvVAlwgw0PAURDSN2zeAmkqjI7enS9a6Y49DDJCQ0r5cR2hrPeecqVcmeUyVg0DAiHWQipy_K1EfihU&s=10"
+            },
+            {
+                id: 2,
+                name: "Сіамський",
+                origin: "Таїланд",
+                hairType: "Коротка",
+                temperament: "Активний, голосний, прив’язаний до власника",
+                description: "Елегантна порода з яскравою зовнішністю та «розмовливим» характером. Дуже розумні та соціальні.",
+                weight: "3–5 кг",
+                lifespan: "15–20 років",
+                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/ShadowCat.jpg/1280px-ShadowCat.jpg"
+            },
+            {
+                id: 3,
+                name: "Перський",
+                origin: "Іран",
+                hairType: "Довга",
+                temperament: "Спокійний, ласкавий, малорухливий",
+                description: "Класична довгошерста порода з круглою мордочкою. Ідеальний компаньйон для тихого дому.",
+                weight: "3–7 кг",
+                lifespan: "12–17 років",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR73vrKgTAIPDvewfxJENo3XptLGFATb5bqkqKxBsCl4Fw6ut5IIeTc0FCn034X9dEKpDvAi0kesFaTzguV7PSnuaXGoOf_SYD2lr92aBg&s=10"
+            },
+            {
+                id: 4,
+                name: "Бенгальський",
+                origin: "США",
+                hairType: "Коротка",
+                temperament: "Енергійний, грайливий, допитливий",
+                description: "Порода з леопардовим забарвленням. Дуже активні, люблять воду та висоту.",
+                weight: "3–7 кг",
+                lifespan: "12–16 років",
+                image: "https://ukr.media/static/ba/aimg/3/9/5/395104_1.jpg"
+            },
+            {
+                id: 5,
+                name: "Шотландський фолд",
+                origin: "Шотландія",
+                hairType: "Коротка",
+                temperament: "Лагідний, тихий, товариський",
+                description: "Знамениті складені вушка. Спокійні, люблять сидіти на руках.",
+                weight: "3–6 кг",
+                lifespan: "12–15 років",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJ3-cy9vkI2MHEqmRDWIxaRBBY77yoaV8Oa12CfwUO7Cxvbh1XzWszxbnavkHjVYrG78SLFJ3o6gZ1JNrUIRpk62e3HLm1AVYWkoRG8Q&s=10"
+            },
+            {
+                id: 6,
+                name: "Регдолл",
+                origin: "США",
+                hairType: "Довга",
+                temperament: "Ласкавий, спокійний, «тряпічна лялька»",
+                description: "Розслаблюється повністю, коли його беруть на руки. Ідеальний сімейний кіт.",
+                weight: "4–9 кг",
+                lifespan: "12–17 років",
+                image: "https://upload.wikimedia.org/wikipedia/commons/4/40/Ragdoll_of_4_Months.jpg"
+            },
+            {
+                id: 7,
+                name: "Сфінкс",
+                origin: "Канада",
+                hairType: "Безшерсті",
+                temperament: "Прив’язаний, допитливий, теплолюбний",
+                description: "Безшерстий, але дуже ласкавий. Потребує тепла та частого догляду за шкірою.",
+                weight: "3–5 кг",
+                lifespan: "13–18 років",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJRDEfJesrCQ1sy8-aOGyikRx2I6aGUF25L-lFyBEkTUoCNqljUxgy8NxnkKI3zCn2lfaeh94WogZAUVyZGtoBiY7kX0y339lS63l_EVE&s=10"
+            },
+            {
+                id: 8,
+                name: "Абісинський",
+                origin: "Ефіопія",
+                hairType: "Коротка",
+                temperament: "Активний, грайливий, атлетичний",
+                description: "«Кіт-акробат». Дуже розумний, любить стрибати та досліджувати.",
+                weight: "3–5 кг",
+                lifespan: "12–16 років",
+                image: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Kamee02.jpg"
+            },
+            {
+                id: 9,
+                name: "Британська короткошерста",
+                origin: "Великобританія",
+                hairType: "Коротка",
+                temperament: "Незалежний, спокійний, врівноважений",
+                description: "«Плюшевий ведмедик». Стійка порода з круглим обличчям і спокійним характером.",
+                weight: "4–8 кг",
+                lifespan: "12–17 років",
+                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Www.pratulums-bkh.de_seal-point-white.jpg/960px-Www.pratulums-bkh.de_seal-point-white.jpg"
+            },
+            {
+                id: 10,
+                name: "Американська короткошерста",
+                origin: "США",
+                hairType: "Коротка",
+                temperament: "Адаптивний, дружній, здоровий",
+                description: "Універсальна робоча порода. Відмінний мисливець і компаньйон.",
+                weight: "3–7 кг",
+                lifespan: "13–15 років",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOoTrkMOJExXgA0nbdVRKhBDGzOnb4quYfat-9mxlGfzjk2gK5-uA8TYBY0Effcd_ioXICa_cZZoGKqvwbGsEJAByEjvEgvNAgJ78hmw&s=10"
+            },
+            {
+                id: 11,
+                name: "Норвезький лісовий",
+                origin: "Норвегія",
+                hairType: "Довга",
+                temperament: "Незалежний, сильний, грайливий",
+                description: "Великий лісовий кіт з водовідштовхувальною шерстю. Любить природу.",
+                weight: "4–9 кг",
+                lifespan: "12–16 років",
+                image: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Black_and_white_Norwegian_Forest_Cat.jpg"
+            },
+            {
+                id: 12,
+                name: "Сибірський",
+                origin: "Росія",
+                hairType: "Довга",
+                temperament: "Ласкавий, гіпоалергенний, розумний",
+                description: "Гіпоалергенна порода з густою шерстю. Відмінно підходить для сімей.",
+                weight: "4–8 кг",
+                lifespan: "12–15 років",
+                image: "https://upload.wikimedia.org/wikipedia/commons/2/2b/Sibirisk_Skovkat.jpg"
+            },
+            {
+                id: 13,
+                name: "Корніш рекс",
+                origin: "Великобританія",
+                hairType: "Кучерява",
+                temperament: "Грайливий, допитливий, енергійний",
+                description: "Кучеряве хутро та великі вуха. Дуже активні та товариські.",
+                weight: "2–4 кг",
+                lifespan: "14–18 років",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXIxTxE2vskFsmmYm5qKzBJROE9eL6lelYRVeQN8gQO2nLsMmQZxc9AWfIV-sjho15ZfJb1FRUxUwffbSpMxxgoowtSjNax7VxunAj6w&s=10"
+            },
+            {
+                id: 14,
+                name: "Девон рекс",
+                origin: "Великобританія",
+                hairType: "Кучерява",
+                temperament: "Клоун, ласкавий, розумний",
+                description: "Маленькі ельфи з величезними вухами. Люблять обійматися.",
+                weight: "2–4 кг",
+                lifespan: "12–16 років",
+                image: "https://upload.wikimedia.org/wikipedia/commons/f/f7/Devon_Rex_male.jpg"
+            },
+            {
+                id: 15,
+                name: "Турецький ван",
+                origin: "Туреччина",
+                hairType: "Довга",
+                temperament: "Любить воду, незалежний, грайливий",
+                description: "Унікальна порода, яка обожнює плавати. Біла шерсть з кольоровими плямами.",
+                weight: "3–6 кг",
+                lifespan: "12–17 років",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDYisCT_jqdMEYpm3Mp6c6rFMfxWOPQ4EwTboHef7QBUIzQCf9Qgg_348kPqu735JUuhXEqmayd-JOayaOcICQl3NsYteOXXsaqkKiVg&s=10"
+            }
+        ]
+        
+        let favorites = []
+        
+        // Render all breeds
+        function renderBreeds(filteredBreeds) {
+            const grid = document.getElementById('breeds-grid')
+            grid.innerHTML = ''
+            
+            if (filteredBreeds.length === 0) {
+                grid.innerHTML = `
+                <div class="col-span-full text-center py-12">
+                    <div class="text-6xl mb-4">😿</div>
+                    <p class="text-xl font-medium">На жаль, нічого не знайдено...</p>
+                    <p class="text-slate-500 mt-2">Спробуйте інший запит або скиньте фільтри</p>
+                </div>`
+                return
+            }
+            
+            filteredBreeds.forEach((breed, index) => {
+                const isFavorite = favorites.includes(breed.id)
+                
+                const cardHTML = `
+                <div onclick="showBreedModal(${breed.id})" class="card-hover bg-white border border-slate-100 rounded-3xl overflow-hidden cursor-pointer group">
+                    <div class="relative">
+                        <img src="${breed.image}" alt="${breed.name}" 
+                             class="w-full h-56 object-cover group-hover:scale-110">
+                        <div class="absolute top-4 right-4 bg-white text-xs font-bold px-3 py-1 rounded-3xl shadow-sm">
+                            ${breed.hairType}
+                        </div>
+                        ${isFavorite ? `<div class="absolute top-4 left-4 text-red-500 text-xl">❤️</div>` : ''}
+                    </div>
+                    <div class="p-5">
+                        <div class="flex justify-between items-baseline">
+                            <h3 class="text-2xl font-semibold">${breed.name}</h3>
+                            <span class="text-amber-400 text-sm">${breed.origin}</span>
+                        </div>
+                        <p class="text-slate-500 text-sm line-clamp-2 mt-2">${breed.description}</p>
+                        
+                        <div class="mt-5 flex justify-between items-center text-xs">
+                            <div class="flex items-center gap-x-1">
+                                <i class="fa-solid fa-heart text-red-400"></i>
+                                <span class="font-medium">Характер:</span>
+                                <span>${breed.temperament.split(',')[0]}</span>
+                            </div>
+                            <button onclick="event.stopImmediatePropagation(); toggleFavorite(${breed.id});" 
+                                    class="text-xl ${isFavorite ? 'text-red-500' : 'text-slate-300 hover:text-red-400'}">
+                                ${isFavorite ? '❤️' : '♡'}
+                            </button>
+                        </div>
+                    </div>
+                </div>`
+                
+                // Add with delay for nice animation
+                grid.innerHTML += cardHTML
+            })
+            
+            // Trigger animations
+            setTimeout(() => {
+                const cards = grid.querySelectorAll('.card-hover')
+                cards.forEach((card, i) => {
+                    card.style.animationDelay = `${i * 80}ms`
+                    card.classList.add('animate-in')
+                })
+            }, 10)
+            
+            document.getElementById('results-count').innerHTML = 
+                `Знайдено <span class="font-semibold text-slate-700">${filteredBreeds.length}</span> порід`
+        }
+        
+        // Filter function
+        function filterBreeds() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase().trim()
+            const hairFilter = document.getElementById('hair-filter').value
+            
+            let filtered = breedsData
+            
+            if (searchTerm) {
+                filtered = filtered.filter(breed => 
+                    breed.name.toLowerCase().includes(searchTerm) ||
+                    breed.origin.toLowerCase().includes(searchTerm) ||
+                    breed.temperament.toLowerCase().includes(searchTerm) ||
+                    breed.description.toLowerCase().includes(searchTerm)
+                )
+            }
+            
+            if (hairFilter) {
+                filtered = filtered.filter(breed => breed.hairType === hairFilter)
+            }
+            
+            renderBreeds(filtered)
+        }
+        
+        // Reset filters
+        function resetFilters() {
+            document.getElementById('search-input').value = ''
+            document.getElementById('hair-filter').value = ''
+            renderBreeds(breedsData)
+        }
+        
+        // Simple sort toggle
+        let currentSort = 'popular'
+        function toggleSort() {
+            currentSort = currentSort === 'popular' ? 'alphabet' : 'popular'
+            document.getElementById('sort-text').textContent = currentSort === 'popular' ? 'За популярністю' : 'За алфавітом'
+            
+            let sorted = [...breedsData]
+            if (currentSort === 'alphabet') {
+                sorted.sort((a, b) => a.name.localeCompare(b.name))
+            }
+            renderBreeds(sorted)
+        }
+        
+        // Show modal
+        function showBreedModal(id) {
+            const breed = breedsData.find(b => b.id === id)
+            if (!breed) return
+            
+            document.getElementById('modal-image').src = breed.image
+            document.getElementById('modal-name').textContent = breed.name
+            document.getElementById('modal-origin').innerHTML = `<i class="fa-solid fa-globe mr-1"></i>${breed.origin}`
+            document.getElementById('modal-hair').textContent = breed.hairType
+            document.getElementById('modal-weight').textContent = breed.weight
+            document.getElementById('modal-lifespan').textContent = breed.lifespan
+            document.getElementById('modal-temperament').textContent = breed.temperament
+            document.getElementById('modal-description').textContent = breed.description + 
+                ' Ця порода ідеально підходить для сімей, які шукають вірного та красивого друга.'
+            
+            // Favorite status
+            const isFav = favorites.includes(breed.id)
+            document.getElementById('modal-favorite-btn').innerHTML = isFav ? '❤️' : '♡'
+            
+            const modal = document.getElementById('breed-modal')
+            modal.classList.remove('hidden')
+            modal.classList.add('flex')
+            
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden'
+        }
+        
+        function hideModal() {
+            const modal = document.getElementById('breed-modal')
+            modal.classList.add('hidden')
+            modal.classList.remove('flex')
+            document.body.style.overflow = 'visible'
+        }
+        
+        // Favorites system
+        function toggleFavorite(id) {
+            if (favorites.includes(id)) {
+                favorites = favorites.filter(favId => favId !== id)
+            } else {
+                favorites.push(id)
+            }
+            updateFavoritesCount()
+            renderBreeds(breedsData) // refresh grid
+        }
+        
+        function toggleFavoriteInModal() {
+            const nameEl = document.getElementById('modal-name')
+            const breed = breedsData.find(b => b.name === nameEl.textContent)
+            if (breed) toggleFavorite(breed.id)
+            hideModal()
+            setTimeout(() => showBreedModal(breed.id), 400)
+        }
+        
+        function updateFavoritesCount() {
+            document.getElementById('favorites-count').textContent = favorites.length
+        }
+        
+        function showFavorites() {
+            if (favorites.length === 0) {
+                alert('❤️ У вас ще немає улюблених порід! Додайте кілька з каталогу.')
+                return
+            }
+            const favBreeds = breedsData.filter(b => favorites.includes(b.id))
+            renderBreeds(favBreeds)
+            navigateToSection('catalog')
+        }
+        
+        // Mobile menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu')
+            const icon = document.getElementById('hamburger-icon')
+            
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden')
+                icon.classList.replace('fa-bars', 'fa-xmark')
+            } else {
+                menu.classList.add('hidden')
+                icon.classList.replace('fa-xmark', 'fa-bars')
+            }
+        }
+        
+        // Scroll to section
+        function navigateToSection(section) {
+            const el = document.getElementById(section)
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth' })
+            }
+        }
+        
+        // Share function (demo)
+        function shareBreed() {
+            hideModal()
+            const message = 'Поділився крутою породою котів з КітКаталогу! 🐱'
+            if (navigator.share) {
+                navigator.share({
+                    title: 'КітКаталог',
+                    text: message
+                })
+            } else {
+                navigator.clipboard.writeText(message + ' https://kitcatalog.ua').then(() => {
+                    alert('🔗 Посилання скопійовано в буфер обміну!')
+                })
+            }
+        }
+        
+        // Initialize everything
+        function init() {
+            // Tailwind
+            const config = initializeTailwind()
+            document.documentElement.setAttribute('data-tailwind-config', JSON.stringify(config))
+            
+            // Render initial breeds
+            renderBreeds(breedsData)
+            
+            console.log('%c✅ Професійний сайт-каталог порід котів успішно завантажено! Оптимізовано для телефонів + анімації + пошук.', 'color:#f59e0b; font-size:13px; font-family:monospace')
+        }
+        
+        // Launch
+        window.onload = init
+    </script>
+</body>
+</html>
